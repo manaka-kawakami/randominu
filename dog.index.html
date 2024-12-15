@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Dog Images</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+    }
+    .images-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+    img {
+      max-width: 200px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <h1>Random Dog Images</h1>
+  <button id="fetchButton">Fetch Dog Images</button>
+  <div class="images-container" id="imagesContainer"></div>
+
+  <script>
+    const fetchButton = document.getElementById('fetchButton');
+    const imagesContainer = document.getElementById('imagesContainer');
+
+    async function fetchDogImages() {
+      try {
+        const response = await fetch('https://dog.ceo/api/breeds/image/random/3');
+        if (!response.ok) {
+          throw new Error('Failed to fetch images');
+        }
+        const data = await response.json();
+        displayImages(data.message);
+      } catch (error) {
+        console.error('Error fetching dog images:', error);
+        alert('Failed to fetch dog images. Please try again.');
+      }
+    }
+
+    function displayImages(images) {
+      imagesContainer.innerHTML = ''; // Clear existing images
+      images.forEach(imageUrl => {
+        const img = document.createElement('img');
+        img.src = imageUrl;
+        img.alt = 'A cute dog';
+        imagesContainer.appendChild(img);
+      });
+    }
+
+    fetchButton.addEventListener('click', fetchDogImages);
+  </script>
+</body>
+</html>
